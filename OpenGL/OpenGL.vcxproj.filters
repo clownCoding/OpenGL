@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{7e2edc61-15cc-4183-8bbf-03a0bd212fa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\res">
+      <UniqueIdentifier>{cb2a12cd-5394-4a7c-93be-2787b1dd2b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\res\shader">
+      <UniqueIdentifier>{68cbc6f6-8fdb-49e9-9ad8-0d9b2f07472d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\res\texture">
+      <UniqueIdentifier>{a27938b8-c8d0-4f9d-9db7-555ddc495f70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\res\stb_image">
+      <UniqueIdentifier>{ce625810-ea87-49dc-914e-95c67d6fd999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\res\glm">
+      <UniqueIdentifier>{af6a72fe-ab02-41d5-8362-185729808c69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\res\old_src">
+      <UniqueIdentifier>{17efa000-5b0f-4180-aaed-ca2c07963f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\res\model">
+      <UniqueIdentifier>{b081cd28-82f9-45d8-85b6-bff254927029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cpp">
+      <UniqueIdentifier>{1ce99461-e153-4096-a42c-827f6264d992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\header">
+      <UniqueIdentifier>{011756b1-c99e-47ae-ae49-a9adbeeb3882}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>src\res\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawChest.hpp">
+      <Filter>src\header</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckError.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shader\Basic.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\Fragment.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\Vertex.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\Gouraud.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\Phong.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\AllLight.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\Coord.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stb_image.h">
+      <Filter>src\res\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="res\glm\glm.hpp">
+      <Filter>src\res\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="res\glm\gtc\matrix_transform.hpp">
+      <Filter>src\res\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="res\glm\gtc\type_ptr.hpp">
+      <Filter>src\res\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexArray.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBufferLayout.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckError.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\texture\paper texture.jpg">
+      <Filter>src\res\texture</Filter>
+    </Image>
+    <Image Include="res\texture\wooden texture.jpg">
+      <Filter>src\res\texture</Filter>
+    </Image>
+    <Image Include="res\texture\splash-ink texture.jpeg">
+      <Filter>src\res\texture</Filter>
+    </Image>
+    <Image Include="res\texture\awesomeface.png">
+      <Filter>src\res\texture</Filter>
+    </Image>
+    <Image Include="res\texture\miku.png">
+      <Filter>src\res\texture</Filter>
+    </Image>
+    <Image Include="res\texture\container2.png">
+      <Filter>src\res\texture</Filter>
+    </Image>
+    <Image Include="res\texture\container2_specular.png">
+      <Filter>src\res\texture</Filter>
+    </Image>
+    <Image Include="res\texture\matrix.jpg">
+      <Filter>src\res\texture</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
