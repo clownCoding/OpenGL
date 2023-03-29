@@ -2,7 +2,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
-#include<GL/glew.h>
+#include<glad/glad.h>
 
 #define ASSERT(x) if(!(x)) __debugbreak();
 #define GLCALL(x) GLClearError();\

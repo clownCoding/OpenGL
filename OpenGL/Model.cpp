@@ -1,15 +1,15 @@
 #include "Model.h"
 
-void Model::Draw(Shader shader)
+void Model::Draw(Shader& shader)
 {
 	for (int i = 0; i < meshes.size(); i++)
 		meshes[i].Draw(shader);
 }
 
-void Model::loadModel(std::string path) 
+void Model::loadModel(std::string const& path) 
 {
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || scene->mRootNode == nullptr) {
 		std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
@@ -35,7 +35,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<TextureInfo> textures;
+	std::vector<Texture> textures;
 
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex;
@@ -43,7 +43,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 		position.x = mesh->mVertices[i].x;
 		position.y = mesh->mVertices[i].y;
 		position.z = mesh->mVertices[i].z;
-		vertex.position = position;
+		vertex.Position = position;
 
 		if (mesh->HasNormals())
 		{
@@ -51,16 +51,17 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 			normal.x = mesh->mNormals[i].x;
 			normal.y = mesh->mNormals[i].y;
 			normal.z = mesh->mNormals[i].z;
-			vertex.normal = normal;
+			vertex.Normal = normal;
 		}
 		
 		if (mesh->mTextureCoords[0]) {
 			glm::vec2 tex;
 			tex.x = mesh->mTextureCoords[0][i].x;
 			tex.y = mesh->mTextureCoords[0][i].y;
+			vertex.TexCoords = tex;
 		}
 		else {
-			vertex.texCoords = glm::vec2(0.0f, 0.0f);
+			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 		}
 		vertices.push_back(vertex);
 	}
@@ -74,19 +75,20 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
 	if (mesh->mMaterialIndex >= 0) {
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		std::vector<TextureInfo> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-		std::vector<TextureInfo> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
 	}
 
 	return Mesh(vertices, indices, textures);
 }
 
-std::vector<TextureInfo> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+std::vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
-	std::vector<TextureInfo>textures;
+	std::vector<Texture>textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
 		aiString str;
 		mat->GetTexture(type, i, &str);
@@ -100,7 +102,7 @@ std::vector<TextureInfo> Model::loadMaterialTextures(aiMaterial* mat, aiTextureT
 			}
 		}
 		if (!skip) {
-			TextureInfo texture;
+			Texture texture;
 			texture.id = TextureFromFile(str.C_Str(), directory);
 			texture.type = typeName;
 			texture.path = str.C_Str();
@@ -144,7 +146,7 @@ unsigned int Model::TextureFromFile(const char* path, const std::string& directo
 	}
 	else
 	{
-		std::cout << "TextureInfo failed to load at path: " << path << std::endl;
+		std::cout << "Texture failed to load at path: " << path << std::endl;
 		stbi_image_free(data);
 	}
 

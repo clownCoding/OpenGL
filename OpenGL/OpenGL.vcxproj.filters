@@ -42,25 +42,13 @@
     <ClCompile Include="Camera.cpp">
       <Filter>src\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="DrawChest.hpp">
-      <Filter>src\header</Filter>
-    </ClCompile>
     <ClCompile Include="IndexBuffer.cpp">
-      <Filter>src\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>src\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
       <Filter>src\cpp</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>src\cpp</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>src\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
       <Filter>src\cpp</Filter>
     </ClCompile>
     <ClCompile Include="VertexArray.cpp">
@@ -70,6 +58,12 @@
       <Filter>src\cpp</Filter>
     </ClCompile>
     <ClCompile Include="CheckError.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
       <Filter>src\cpp</Filter>
     </ClCompile>
   </ItemGroup>
@@ -115,19 +109,10 @@
     <ClInclude Include="IndexBuffer.h">
       <Filter>src\header</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>src\header</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>src\header</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>src\header</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>src\header</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
       <Filter>src\header</Filter>
     </ClInclude>
     <ClInclude Include="VertexArray.h">
@@ -140,6 +125,12 @@
       <Filter>src\header</Filter>
     </ClInclude>
     <ClInclude Include="CheckError.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
       <Filter>src\header</Filter>
     </ClInclude>
   </ItemGroup>

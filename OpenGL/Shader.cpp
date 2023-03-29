@@ -1,5 +1,5 @@
 #include "Shader.h"
-#include "gtc/type_ptr.hpp"
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(const std::string& filePath):m_FilePath(filePath)
 {

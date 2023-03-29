@@ -1,6 +1,6 @@
 #pragma once
 #include<vector>
-#include<GL/glew.h>
+#include<glad/glad.h>
 #include "Renderer.h"
 #include <assert.h>
 

@@ -1,7 +1,7 @@
 #pragma once
 #ifndef CHECKERROR_H_
 #define CHECKERROR_H_
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <iostream>
 
 

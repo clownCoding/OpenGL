@@ -1,10 +1,10 @@
-#include<iostream>
-#include<GL/glew.h>
-#include<GLFW/glfw3.h>
-#include<fstream>
-#include<sstream>
-#include "glm.hpp"
-#include "gtc/matrix_transform.hpp"
+﻿#include <iostream>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <fstream>
+#include <sstream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -15,10 +15,8 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "VertexBufferLayout.h"
-#include "Texture.h"
 #include "Camera.h"
 #include "Model.h"
-#include "Renderer.h"
 #include "CheckError.h"
 
 
@@ -62,34 +60,22 @@ int main(void) {
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	if (glewInit() != GLEW_OK) {
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
-	glGetError();
 	
 	std::cout << glGetString(GL_VERSION) << std::endl;
+
+	stbi_set_flip_vertically_on_load(false);
 
 	Shader coordShader("res/shader/Coord.shader");
 
 	Shader shader("res/shader/basic.shader");
-	Model ourModel("res/model/backpack/backpack.obj");
+	Model ourModel("res/model/keqing/刻晴.pmx");
 
 	glEnable(GL_DEPTH_TEST);
-
-	float coordPosition[] = {
-		0.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
-	};
-	VertexBuffer vbo(coordPosition, sizeof(coordPosition));
-	VertexBufferLayout layout;
-	layout.Push<float>(3);
-	layout.Push<float>(3);
-	VertexArray vao;
-	vao.AddBuffer(vbo, layout);
 
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -103,17 +89,10 @@ int main(void) {
 		camera.ProcessKeyboard(window, deltaTime);
 
 		glm::mat4 model(1.0f);
-		glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
 		glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetView();
 
-		coordShader.Bind();
-		coordShader.SetUniformMat4f("model", model);
-		coordShader.SetUniformMat4f("view", view);
-		coordShader.SetUniformMat4f("projection", projection);
-
-		glLineWidth(2);
-		glDrawArrays(GL_LINES, 0, 6);
 		shader.Bind();
 		shader.SetUniformMat4f("model", model);
 		shader.SetUniformMat4f("view", view);

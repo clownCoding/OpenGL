@@ -1,5 +1,5 @@
 #pragma once
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include <vector>
 #include "VertexArray.h"
 #include "VertexBuffer.h"
@@ -8,13 +8,15 @@
 #include "VertexBufferLayout.h"
 #include "CheckError.h"
 
+#define MAX_BONE_INFLUENCE 4
+
 struct Vertex {
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec2 texCoords;
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec2 TexCoords;
 };
 
-struct TextureInfo {
+struct Texture {
 	std::string type;
 	std::string path;
 	unsigned int id;
@@ -22,21 +24,18 @@ struct TextureInfo {
 
 class Mesh {
 private:
-	//VertexArray* VAO;
-	//VertexBuffer* VBO;
-	//VertexBufferLayout* layout;
-	//IndexBuffer* EBO;
-	unsigned int VBO;
-	unsigned int EBO;
+	VertexArray* VAO;
+	VertexBuffer* VBO;
+	VertexBufferLayout* layout;
+	IndexBuffer* EBO;
 	
 	void setupMesh();
 
 public:
-	unsigned int VAO;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<TextureInfo> textures;
+	std::vector<Texture> textures;
 
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureInfo> textures);
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
 	void Draw(Shader shader);
 };

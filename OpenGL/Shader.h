@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <unordered_map>
-#include "glm.hpp"
+#include <glm/glm.hpp>
 
 struct ShaderProgramSource {
 	std::string vertexShader;
