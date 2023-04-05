@@ -25,11 +25,12 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 
+int BoneNum = 0;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 900;
 
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -46,8 +47,7 @@ int main(void) {
 	if (!glfwInit()) {
 		return -1;
 	}
-
-	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "hello world", nullptr, nullptr);
+	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Learn OpenGL", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -73,9 +73,11 @@ int main(void) {
 	Shader coordShader("res/shader/Coord.shader");
 
 	Shader shader("res/shader/basic.shader");
-	Model ourModel("res/model/keqing/刻晴.pmx");
+	Model ourModel("res/model/keqing/keqing_anim.fbx");
 
 	glEnable(GL_DEPTH_TEST);
+
+	ourModel.SetStartTime();
 
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -89,7 +91,9 @@ int main(void) {
 		camera.ProcessKeyboard(window, deltaTime);
 
 		glm::mat4 model(1.0f);
-		glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(0.1f));
 		glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetView();
 
@@ -97,6 +101,15 @@ int main(void) {
 		shader.SetUniformMat4f("model", model);
 		shader.SetUniformMat4f("view", view);
 		shader.SetUniformMat4f("projection", projection);
+
+		shader.SetUniform3f("dirLight.direction", -0.2f, -1.0f, -0.3f);
+		shader.SetUniform3f("dirLight.ambient", 0.8f, 0.8f, 0.8f);
+		shader.SetUniform3f("dirLight.diffuse", 0.8f, 0.8f, 0.8f);
+		shader.SetUniform3f("dirLight.specular", 1.0f, 1.0f, 1.0f);
+
+		shader.SetUniform3f("viewPos", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
+
+		ourModel.ProcessAnimation();
 		ourModel.Draw(shader);
 
 		glfwSwapBuffers(window);

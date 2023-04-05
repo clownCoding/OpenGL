@@ -1,5 +1,6 @@
 #include "VertexArray.h"
 #include "VertexBufferLayout.h"
+#include "Mesh.h"
 
 VertexArray::VertexArray()
 {
@@ -21,9 +22,16 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	for (int i = 0; i < elements.size(); i++) {
 		const auto& element = elements[i];
 		glEnableVertexAttribArray(i);
-		glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (void*)offset);
-		offset += element.count * element.GetTypeOfSize(element.type);
+		if (element.type == GL_INT) {
+			glVertexAttribIPointer(i, element.count, element.type, layout.GetStride(), (void*)offset);
+			offset += element.count * element.GetTypeOfSize(element.type);
+		}
+		else {
+			glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (void*)offset);
+			offset += element.count * element.GetTypeOfSize(element.type);
+		}
 	}
+	
 	vb.Unbind();
 	Unbind();
 }

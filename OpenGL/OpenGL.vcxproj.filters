@@ -66,6 +66,9 @@
     <ClCompile Include="Model.cpp">
       <Filter>src\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="BoneAnimation.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shader\Basic.shader">
@@ -131,6 +134,9 @@
       <Filter>src\header</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="BoneAnimation.h">
       <Filter>src\header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,13 +11,15 @@ void Mesh::setupMesh()
 	layout->Push<float>(3);
 	layout->Push<float>(3);
 	layout->Push<float>(2);
+	layout->Push<int>(4);
+	layout->Push<float>(4);
 	VAO->AddBuffer(*VBO, *layout);
 	EBO->Unbind();
 	VBO->Unbind();
 	VAO->Unbind();
 }
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureInfo> textures)
 {
 	this->vertices = vertices;
 	this->indices = indices;
@@ -32,11 +34,13 @@ void Mesh::Draw(Shader shader)
 	unsigned int normalNr = 1;
 	unsigned int heightNr = 1;
 
-	for (int i = 0; i < textures.size(); i++) {
+	for (unsigned int i = 0; i < textures.size(); i++) {
 		glActiveTexture(GL_TEXTURE0 + i);
+		
 		std::string number;
+		//std::string name = textures[i].getType();
 		std::string name = textures[i].type;
-		if (name == "texture_diffuse")
+		if (name == "texture_diffuse") 
 			number = std::to_string(diffuseNr++);
 		else if (name == "texture_specular")
 			number = std::to_string(specularNr++);

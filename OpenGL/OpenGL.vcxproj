@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BoneAnimation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckError.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
@@ -171,6 +172,7 @@
     <None Include="res\shader\Vertex.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoneAnimation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckError.h" />
     <ClInclude Include="IndexBuffer.h" />

@@ -14,9 +14,20 @@ struct Vertex {
 	glm::vec3 Position;
 	glm::vec3 Normal;
 	glm::vec2 TexCoords;
+	int BoneIDs[MAX_BONE_INFLUENCE] = { 0 };
+	float BoneWeights[MAX_BONE_INFLUENCE] = { 0.0f };
+	void AddBoneData(int id, float weight) {
+		for (unsigned int i = 0; i < MAX_BONE_INFLUENCE; i++) {
+			if (BoneWeights[i] == 0.0f) {
+				BoneIDs[i] = id;
+				BoneWeights[i] = weight;
+				return;
+			}
+		}
+		assert(0);
+	}
 };
-
-struct Texture {
+struct TextureInfo {
 	std::string type;
 	std::string path;
 	unsigned int id;
@@ -34,8 +45,8 @@ private:
 public:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	std::vector<Texture> textures;
+	std::vector<TextureInfo> textures;
 
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureInfo> textures);
 	void Draw(Shader shader);
 };
