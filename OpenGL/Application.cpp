@@ -8,6 +8,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <irrKlang.h>
 
 #include "Renderer.h"
 #include "VertexBuffer.h"
@@ -24,6 +25,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
+void InitScene(Shader& shader, Shader* noTexShader);
 
 int BoneNum = 0;
 float deltaTime = 0.0f;
@@ -40,6 +42,8 @@ Camera camera(cameraPos, cameraFront, cameraUp);
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
+
+irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
 
 int main(void) {
 	GLFWwindow* window;
@@ -69,19 +73,20 @@ int main(void) {
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	stbi_set_flip_vertically_on_load(false);
-
-	Shader coordShader("res/shader/Coord.shader");
-
+	Shader sceneShader("res/shader/Vertex.shader", "res/shader/Fragment.shader");
+	Shader noTexShader("res/shader/Vertex.shader", "res/shader/NoTexFragment.shader");
 	Shader shader("res/shader/basic.shader");
-	Model ourModel("res/model/keqing/keqing_anim.fbx");
+	Model ourModel("res/model/eula/eula.pmx");
+	//Model scene("res/model/scene/scene.pmx");
 
 	glEnable(GL_DEPTH_TEST);
 
 	ourModel.SetStartTime();
+	soundEngine->play2D("res/audio/music.mp3", GL_TRUE);
 
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(0.0, 0.0, 0.0, 1.0);
-		//glClearColor(0.1, 0.5, 0.6, 1.0);
+		//glClearColor(0.0, 0.0, 0.0, 1.0);
+		glClearColor(0.1, 0.5, 0.6, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		processInput(window);
 
@@ -89,6 +94,9 @@ int main(void) {
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		camera.ProcessKeyboard(window, deltaTime);
+
+		/*InitScene(sceneShader, &noTexShader);
+		scene.Draw(sceneShader, &noTexShader);*/
 
 		glm::mat4 model(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -102,10 +110,13 @@ int main(void) {
 		shader.SetUniformMat4f("view", view);
 		shader.SetUniformMat4f("projection", projection);
 
-		shader.SetUniform3f("dirLight.direction", -0.2f, -1.0f, -0.3f);
-		shader.SetUniform3f("dirLight.ambient", 0.8f, 0.8f, 0.8f);
-		shader.SetUniform3f("dirLight.diffuse", 0.8f, 0.8f, 0.8f);
-		shader.SetUniform3f("dirLight.specular", 1.0f, 1.0f, 1.0f);
+		glm::vec3 ambient(0.5f);
+		glm::vec3 diffuse(0.6f);
+		glm::vec3 specular(0.1f);
+		shader.SetUniform3f("dirLight.direction", 0.5f, 0.5f, -0.5f);
+		shader.SetUniformVec3("dirLight.ambient", ambient);
+		shader.SetUniformVec3("dirLight.diffuse", diffuse);
+		shader.SetUniformVec3("dirLight.specular", specular);
 
 		shader.SetUniform3f("viewPos", camera.GetPos().x, camera.GetPos().y, camera.GetPos().z);
 
@@ -155,4 +166,21 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+}
+
+void InitScene(Shader& shader, Shader* noTexShader) {
+	glm::mat4 model(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	glm::mat4 view = camera.GetView();
+
+	shader.Bind();
+	shader.SetUniformMat4f("model", model);
+	shader.SetUniformMat4f("view", view);
+	shader.SetUniformMat4f("projection", projection);
+
+	noTexShader->Bind();
+	shader.SetUniformMat4f("model", model);
+	shader.SetUniformMat4f("view", view);
+	shader.SetUniformMat4f("projection", projection);
 }

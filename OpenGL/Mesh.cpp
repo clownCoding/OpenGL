@@ -13,6 +13,7 @@ void Mesh::setupMesh()
 	layout->Push<float>(2);
 	layout->Push<int>(4);
 	layout->Push<float>(4);
+	layout->Push<float>(3);
 	VAO->AddBuffer(*VBO, *layout);
 	EBO->Unbind();
 	VBO->Unbind();
@@ -27,30 +28,38 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 	setupMesh();
 }
 
-void Mesh::Draw(Shader shader)
+void Mesh::Draw(Shader shader, Shader* noTexShader)
 {
-	unsigned int diffuseNr = 1;
-	unsigned int specularNr = 1;
-	unsigned int normalNr = 1;
-	unsigned int heightNr = 1;
+	if (textures.size() != 0) {
+		unsigned int diffuseNr = 1;
+		unsigned int specularNr = 1;
 
-	for (unsigned int i = 0; i < textures.size(); i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
-		
-		std::string number;
-		//std::string name = textures[i].getType();
-		std::string name = textures[i].type;
-		if (name == "texture_diffuse") 
-			number = std::to_string(diffuseNr++);
-		else if (name == "texture_specular")
-			number = std::to_string(specularNr++);
-		shader.SetUniform1i((name + number).c_str(), i);
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		for (unsigned int i = 0; i < textures.size(); i++) {
+			glActiveTexture(GL_TEXTURE0 + i);
+
+			std::string number;
+			//std::string name = textures[i].getType();
+			std::string name = textures[i].type;
+			if (name == "texture_diffuse")
+				number = std::to_string(diffuseNr++);
+			else if (name == "texture_specular")
+				number = std::to_string(specularNr++);
+			shader.SetUniform1i((name + number).c_str(), i);
+			glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		}
+		glActiveTexture(GL_TEXTURE0);
+
+		VAO->Bind();
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+		VAO->Unbind();
+		glActiveTexture(GL_TEXTURE0);
 	}
-	glActiveTexture(GL_TEXTURE0);
-
-	VAO->Bind();
- 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
-	VAO->Unbind();
-	glActiveTexture(GL_TEXTURE0);
+	else {
+		noTexShader->Bind();
+		VAO->Bind();
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+		VAO->Unbind();
+		noTexShader->Unbind();
+	}
+	
 }

@@ -24,7 +24,7 @@ void Camera::ProcessKeyboard(GLFWwindow* window, float deltaTime)
 		this->cameraPos -= cameraSpeed * this->cameraFront;
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		this->cameraPos += cameraSpeed * this->cameraUp;
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
 		this->cameraPos -= cameraSpeed * this->cameraUp;
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		this->cameraPos -= glm::cross(this->cameraFront, this->cameraUp) * cameraSpeed;

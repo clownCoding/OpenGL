@@ -16,6 +16,7 @@ struct Vertex {
 	glm::vec2 TexCoords;
 	int BoneIDs[MAX_BONE_INFLUENCE] = { 0 };
 	float BoneWeights[MAX_BONE_INFLUENCE] = { 0.0f };
+	glm::vec3 Color;
 	void AddBoneData(int id, float weight) {
 		for (unsigned int i = 0; i < MAX_BONE_INFLUENCE; i++) {
 			if (BoneWeights[i] == 0.0f) {
@@ -48,5 +49,5 @@ public:
 	std::vector<TextureInfo> textures;
 
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureInfo> textures);
-	void Draw(Shader shader);
+	void Draw(Shader shader, Shader* noTexShader);
 };

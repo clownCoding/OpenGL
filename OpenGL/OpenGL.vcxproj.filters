@@ -92,6 +92,9 @@
     <None Include="res\shader\Coord.shader">
       <Filter>src\res\shader</Filter>
     </None>
+    <None Include="res\shader\NoTexFragment.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">

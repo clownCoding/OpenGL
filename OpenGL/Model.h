@@ -15,12 +15,11 @@ struct BoneInfo {
 	}
 };
 
-
 class Model {
 public:
 	inline Model(std::string path, std::string animPath, bool gamma = false):gammaCorrection(gamma), filePath(path) { loadModel(path, animPath); };
 	inline Model(std::string path, bool gamma = false):gammaCorrection(gamma), filePath(path) { loadModel(path, path); };
-	void Draw(Shader& shader);
+	void Draw(Shader& shader, Shader* noTexShader = nullptr);
 	void ProcessAnimation();
 	void SetStartTime();
 

@@ -28,7 +28,7 @@ glm::mat4 aiMatToGlmMat(const aiMatrix4x4* from) {
 	return to;
 }
 
-void Model::Draw(Shader& shader)
+void Model::Draw(Shader& shader, Shader* noTexShader)
 {
 	for (unsigned int i = 0; i < boneInfos.size(); i++) {
 		std::string name = "gBones[";
@@ -38,7 +38,7 @@ void Model::Draw(Shader& shader)
 		shader.SetUniformMat4f(name, transformation);
 	}
 	for (int i = 0; i < meshes.size(); i++)
-		meshes[i].Draw(shader);
+		meshes[i].Draw(shader, noTexShader);
 }
 
 void Model::loadModel(std::string const& path, std::string const& animPath) 
@@ -53,6 +53,7 @@ void Model::loadModel(std::string const& path, std::string const& animPath)
 	directory = path.substr(0, path.find_last_of('/'));
 	rootInverseTransform = scene->mRootNode->mTransformation.Inverse();
 	processNode(scene->mRootNode, scene);
+	std::cout << boneInfos.size() << std::endl;
 }
 
 int Model::GetBoneId(const aiBone* bone) {
@@ -86,7 +87,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<TextureInfo> textures;
-
+	scene->mMaterials[0];
 	//process vertex
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 		Vertex vertex;
@@ -111,9 +112,15 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 			tex.y = mesh->mTextureCoords[0][i].y;
 			vertex.TexCoords = tex;
 		}
-		else {
-			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-		}
+
+		aiColor3D aiColor;
+		scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, aiColor);
+
+		glm::vec3 color;
+		color.x = aiColor.r;
+		color.y = aiColor.g;
+		color.z = aiColor.b;
+		vertex.Color = color;
 		vertices.push_back(vertex);
 	}
 	//process indices
@@ -156,7 +163,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 
 void Model::ProcessAnimation() {
 	aiMatrix4x4 pTransform;
-	float time = 0.0f;
+	double time = 0.0f;
 	if (animation->HasAnimation()) {
 		time = animation->GetAnimationTimeTicks();
 	}
@@ -166,19 +173,25 @@ void Model::ProcessAnimation() {
 void Model::ProcessTransform(float time, const aiNode* node,const aiMatrix4x4& parentTransform)
 {
 	std::string nodeName(node->mName.data);
-	const aiNodeAnim* nodeAnim = animation->FindNodeAnim(nodeName);
 	aiMatrix4x4 animTransform;
-	if (nodeAnim) {
+	if (animation->HasAnimation()) {
+		const aiNodeAnim* nodeAnim = animation->FindNodeAnim(nodeName);
 		animTransform = animation->GetAimationTransform(time, nodeAnim);
+		/*if (nodeAnim) {
+			animTransform = animation->GetAimationTransform(time, nodeAnim);
+		}
+		else {
+			animTransform = node->mTransformation;
+		}*/
 	}
 	else {
-		animTransform = animation->GetAimationTransform(time, nodeAnim);
+		animTransform = node->mTransformation;
 	}
 	//animTransform = node->mTransformation;
 	aiMatrix4x4 pTransform = parentTransform * animTransform;
 	if (name_id.find(nodeName) != name_id.end()) {
 		unsigned int boneIndex = name_id[nodeName];
-		boneInfos[boneIndex].transformation = rootInverseTransform * pTransform * boneInfos[boneIndex].offset;
+		boneInfos[boneIndex].transformation = pTransform * boneInfos[boneIndex].offset;
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 		ProcessTransform(time, node->mChildren[i], pTransform);

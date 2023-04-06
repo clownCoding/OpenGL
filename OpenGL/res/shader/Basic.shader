@@ -6,14 +6,16 @@ layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTexCoords;
 layout(location = 3) in ivec4 aBoneIDs;
 layout(location = 4) in vec4 aWeights;
+layout(location = 5) in vec3 aColors;
 
 out vec2 texCoords;
 out vec3 normal;
 out vec3 fragPos;
 flat out ivec4 boneIDs;
 out vec4 weights;
+out vec3 color;
 
-const int MAX_BONES = 400;
+const int MAX_BONES = 250;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -22,11 +24,6 @@ uniform mat4 gBones[MAX_BONES];
 
 void main()
 {
-	texCoords = aTexCoords;
-	fragPos = vec3(model * vec4(aPos, 1.0));
-	normal = mat3(transpose(inverse(model))) * aNormal;
-	boneIDs = aBoneIDs;
-	weights = aWeights;
 	mat4 BoneTransform = gBones[aBoneIDs[0]] * aWeights[0];
 	BoneTransform += gBones[aBoneIDs[1]] * aWeights[1];
 	BoneTransform += gBones[aBoneIDs[2]] * aWeights[2];
@@ -34,6 +31,13 @@ void main()
 
 	vec4 PosL = BoneTransform * vec4(aPos, 1.0);
 	gl_Position = projection * view * model * PosL;
+
+	texCoords = aTexCoords;
+	fragPos = vec3(model * BoneTransform * vec4(aPos, 1.0));
+	normal = mat3(transpose(inverse(model))) * aNormal;
+	boneIDs = aBoneIDs;
+	weights = aWeights;
+	color = aColors;
 }
 
 #shader fragment
@@ -55,6 +59,7 @@ in vec3 normal;
 in vec3 fragPos;
 flat in ivec4 boneIDs;
 in vec4 weights;
+in vec3 color;
 
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
@@ -64,7 +69,7 @@ uniform DirLight dirLight;
 void main()
 {
 	vec3 result;
-	result = CalcDirLight(dirLight, normal, viewPos);
+	result = color * CalcDirLight(dirLight, normal, viewPos);
 	FragColor = vec4(result, 1.0f);
 	//FragColor = vec4(1.0f, 0.5f, 0.5f, 1.0f);
 }

@@ -7,7 +7,6 @@ void BoneAnimation::LoadAnimation(std::string filePath)
 		std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
 		return;
 	}
-	std::cout << scene->mNumAnimations << std::endl;
 }
 
 void BoneAnimation::SetStartTime()
@@ -29,7 +28,7 @@ const aiNodeAnim* BoneAnimation::FindNodeAnim(const std::string& NodeName)
 	return nullptr;
 }
 
-unsigned int BoneAnimation::FindScaling(float AnimationTime, const aiNodeAnim* pNodeAnim)
+unsigned int BoneAnimation::FindScaling(double AnimationTime, const aiNodeAnim* pNodeAnim)
 {
 	assert(pNodeAnim->mNumScalingKeys > 0);
 
@@ -43,7 +42,7 @@ unsigned int BoneAnimation::FindScaling(float AnimationTime, const aiNodeAnim* p
 	return 0;
 }
 
-unsigned int BoneAnimation::FindRotation(float AnimationTime, const aiNodeAnim* pNodeAnim)
+unsigned int BoneAnimation::FindRotation(double AnimationTime, const aiNodeAnim* pNodeAnim)
 {
 	assert(pNodeAnim->mNumRotationKeys > 0);
 
@@ -57,7 +56,7 @@ unsigned int BoneAnimation::FindRotation(float AnimationTime, const aiNodeAnim* 
 	return 0;
 }
 
-unsigned int BoneAnimation::FindPosition(float AnimationTime, const aiNodeAnim* pNodeAnim)
+unsigned int BoneAnimation::FindPosition(double AnimationTime, const aiNodeAnim* pNodeAnim)
 {
 	for (unsigned int i = 0; i < pNodeAnim->mNumPositionKeys - 1; i++) {
 		float t = (float)pNodeAnim->mPositionKeys[i + 1].mTime;
@@ -69,7 +68,7 @@ unsigned int BoneAnimation::FindPosition(float AnimationTime, const aiNodeAnim* 
 	return 0;
 }
 
-void BoneAnimation::CalcInterpolatedScaling(aiVector3D& Out, float AnimationTime, const aiNodeAnim* pNodeAnim)
+void BoneAnimation::CalcInterpolatedScaling(aiVector3D& Out, double AnimationTime, const aiNodeAnim* pNodeAnim)
 {
 	if (pNodeAnim->mNumScalingKeys == 1) {
 		Out = pNodeAnim->mScalingKeys[0].mValue;
@@ -90,7 +89,7 @@ void BoneAnimation::CalcInterpolatedScaling(aiVector3D& Out, float AnimationTime
 	Out = Start + Factor * Delta;
 }
 
-void BoneAnimation::CalcInterpolatedRotation(aiQuaternion& Out, float AnimationTime, const aiNodeAnim* pNodeAnim)
+void BoneAnimation::CalcInterpolatedRotation(aiQuaternion& Out, double AnimationTime, const aiNodeAnim* pNodeAnim)
 {
 	if (pNodeAnim->mNumRotationKeys == 1) {
 		Out = pNodeAnim->mRotationKeys[0].mValue;
@@ -111,7 +110,7 @@ void BoneAnimation::CalcInterpolatedRotation(aiQuaternion& Out, float AnimationT
 	Out.Normalize();
 }
 
-void BoneAnimation::CalcInterpolatedPosition(aiVector3D& Out, float AnimationTime, const aiNodeAnim* pNodeAnim)
+void BoneAnimation::CalcInterpolatedPosition(aiVector3D& Out, double AnimationTime, const aiNodeAnim* pNodeAnim)
 {
 	if (pNodeAnim->mNumPositionKeys == 1) {
 		Out = pNodeAnim->mPositionKeys[0].mValue;
@@ -132,7 +131,7 @@ void BoneAnimation::CalcInterpolatedPosition(aiVector3D& Out, float AnimationTim
 	Out = Start + Factor * Delta;
 }
 
-aiMatrix4x4 BoneAnimation::GetAimationTransform(float timeInTicks, const aiNodeAnim* nodeAnim)
+aiMatrix4x4 BoneAnimation::GetAimationTransform(double timeInTicks, const aiNodeAnim* nodeAnim)
 {
 	aiMatrix4x4 transform;
 
@@ -156,13 +155,13 @@ aiMatrix4x4 BoneAnimation::GetAimationTransform(float timeInTicks, const aiNodeA
 	return transform;
 }
 
-float BoneAnimation::GetAnimationTimeTicks()
+double BoneAnimation::GetAnimationTimeTicks()
 {
 	double currentTime = glfwGetTime();
-	float animationTimeSec = float(currentTime - startTime);
-	float ticksPerSecond = (float)(scene->mAnimations[0]->mTicksPerSecond != 0 ? scene->mAnimations[0]->mTicksPerSecond : 25.0f);
-	float timeInTicks = animationTimeSec * ticksPerSecond;
-	float animationTimeTicks = fmod(timeInTicks, (float)scene->mAnimations[0]->mDuration);
+	double animationTimeSec = currentTime - startTime;
+	double ticksPerSecond = scene->mAnimations[0]->mTicksPerSecond != 0 ? scene->mAnimations[0]->mTicksPerSecond : 25.0;
+	double timeInTicks = animationTimeSec * ticksPerSecond;
+	double animationTimeTicks = fmod(timeInTicks, scene->mAnimations[0]->mDuration);
 
 	return animationTimeTicks;
 }
