@@ -69,6 +69,18 @@
     <ClCompile Include="BoneAnimation.cpp">
       <Filter>src\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>src\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shader\Basic.shader">
@@ -93,6 +105,27 @@
       <Filter>src\res\shader</Filter>
     </None>
     <None Include="res\shader\NoTexFragment.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\Particle.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\SingleColor.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\SimpleFrame.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\SkyBox.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\Mirror.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\SimpleDepth.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
+    <None Include="res\shader\DepthMap.shader">
       <Filter>src\res\shader</Filter>
     </None>
   </ItemGroup>
@@ -140,6 +173,18 @@
       <Filter>src\header</Filter>
     </ClInclude>
     <ClInclude Include="BoneAnimation.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameBuffer.h">
+      <Filter>src\header</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
       <Filter>src\header</Filter>
     </ClInclude>
   </ItemGroup>

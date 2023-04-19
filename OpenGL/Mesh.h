@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include "VertexArray.h"
 #include "VertexBuffer.h"
@@ -7,6 +8,7 @@
 #include "IndexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "CheckError.h"
+#include "Camera.h"
 
 #define MAX_BONE_INFLUENCE 4
 
@@ -49,5 +51,5 @@ public:
 	std::vector<TextureInfo> textures;
 
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<TextureInfo> textures);
-	void Draw(Shader shader, Shader* noTexShader);
+	void Draw(Shader& shader, Shader* noTexShader);
 };

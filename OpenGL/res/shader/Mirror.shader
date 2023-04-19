@@ -52,7 +52,6 @@ struct DirLight {
 };
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewPos);
-float ShadowCalculation(vec4 fragPosLightSpace);
 
 out vec4 FragColor;
 in vec2 texCoords;
@@ -61,43 +60,34 @@ in vec3 fragPos;
 flat in ivec4 boneIDs;
 in vec4 weights;
 in vec3 color;
-in vec4 fragPosLightSpace;
 
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
 uniform vec3 viewPos;
 uniform DirLight dirLight;
 uniform samplerCube skybox;
-uniform int mirror;
 
 void main()
 {
 	vec3 I = normalize(fragPos - viewPos);
 	vec3 R = reflect(I, normalize(normal));
 	vec3 result;
-	if (mirror == 1) {
-		result = 0.6 * color * CalcDirLight(dirLight, normal, viewPos) + 0.4 * texture(skybox, R).rgb;
-	}
-	else {
-		result = color * CalcDirLight(dirLight, normal, viewPos);
-	}
-
-	FragColor = vec4(result, 1.0f);
+	result = color * CalcDirLight(dirLight, normal, viewPos);
+	FragColor = 0.6 * vec4(result, 1.0f) + 0.4 * vec4(texture(skybox, R).rgb, 1.0);
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewPos) {
-	vec3 texColor = vec3(texture(texture_diffuse1, texCoords));
-	vec3 ambient = light.ambient;
+	vec3 ambient = vec3(texture(texture_diffuse1, texCoords)) * light.ambient;
 
 	vec3 lightDir = normalize(-light.direction);
 	float diff = max(dot(lightDir, normalize(normal)), 0.0f);
-	vec3 diffuse =  diff * light.diffuse;
+	vec3 diffuse = vec3(texture(texture_diffuse1, texCoords)) * diff * light.diffuse;
 
 	//vec3 reflectDir = reflect(-lightDir, normalize(normal));
 	vec3 viewDir = normalize(viewPos - fragPos);
 	vec3 halfwayDir = normalize(lightDir + viewDir);
 	float spec = pow(max(dot(normalize(normal), halfwayDir), 0.0), 32.0f);
-	vec3 specular = spec * light.specular;
+	vec3 specular = vec3(texture(texture_specular1, texCoords)) * spec * light.specular;
 
-	return (ambient + diffuse + specular) * texColor;
+	return ambient + diffuse + specular;
 }

@@ -28,9 +28,9 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 	setupMesh();
 }
 
-void Mesh::Draw(Shader shader, Shader* noTexShader)
+void Mesh::Draw(Shader& shader, Shader* noTexShader)
 {
-	if (textures.size() != 0) {
+	/*if (textures.size() != 0) {*/
 		unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
 
@@ -44,7 +44,14 @@ void Mesh::Draw(Shader shader, Shader* noTexShader)
 				number = std::to_string(diffuseNr++);
 			else if (name == "texture_specular")
 				number = std::to_string(specularNr++);
+			if (textures[i].path == "tex\\floor.png" || textures[i].path == "tex\\water.png" || textures[i].path == "tex\\light.png") {
+				shader.SetUniform1i("mirror", 1);
+			}
+			else {
+				shader.SetUniform1i("mirror", 0);
+			}
 			shader.SetUniform1i((name + number).c_str(), i);
+
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
 		glActiveTexture(GL_TEXTURE0);
@@ -53,13 +60,13 @@ void Mesh::Draw(Shader shader, Shader* noTexShader)
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
 		VAO->Unbind();
 		glActiveTexture(GL_TEXTURE0);
-	}
-	else {
-		noTexShader->Bind();
-		VAO->Bind();
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
-		VAO->Unbind();
-		noTexShader->Unbind();
-	}
+	
+	//else {
+	//	noTexShader->Bind();
+	//	VAO->Bind();
+	//	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+	//	VAO->Unbind();
+	//	noTexShader->Unbind();
+	//}
 	
 }

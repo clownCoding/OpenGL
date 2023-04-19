@@ -1,8 +1,8 @@
 #pragma once
+#include<glad/glad.h>
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
-#include<glad/glad.h>
 
 #define ASSERT(x) if(!(x)) __debugbreak();
 #define GLCALL(x) GLClearError();\

@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include <glad/glad.h>
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -23,6 +23,7 @@ public:
 	~Shader();
 	inline unsigned int getID() { return m_RendererID; }
 
+	void SetUniform4f(const std::string& name, glm::vec4 vec);
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 	void SetUniform3f(const std::string& name, float v0, float v1, float v2);
 	void SetUniform1f(const std::string& name, float v0);
