@@ -83,7 +83,7 @@ void ParticleSystem::OnRender(Camera& camera)
 		model = glm::translate(model, particle.position);
 		model = glm::rotate(model, particle.rotation, glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(size * 0.2));
-		glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)1200 / (float)900, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)1920 / (float)1080, 0.1f, 100.0f);
 		glm::mat4 view = camera.GetView();
 
 		particleShader->Bind();

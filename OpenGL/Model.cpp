@@ -31,7 +31,7 @@ glm::mat4 aiMatToGlmMat(const aiMatrix4x4* from) {
 void Model::Draw(Shader& shader, Shader* noTexShader)
 {
 	for (unsigned int i = 0; i < boneInfos.size(); i++) {
-		std::string name = "gBones[";
+		std::string name = "boneTransform.gBones[";
 		name += std::to_string(i);
 		name += "]";
 		glm::mat4 transformation(aiMatToGlmMat(&(boneInfos[i].transformation)));
@@ -187,7 +187,6 @@ void Model::ProcessTransform(float time, const aiNode* node,const aiMatrix4x4& p
 	else {
 		animTransform = node->mTransformation;
 	}
-	//animTransform = node->mTransformation;
 	aiMatrix4x4 pTransform = parentTransform * animTransform;
 	if (name_id.find(nodeName) != name_id.end()) {
 		unsigned int boneIndex = name_id[nodeName];

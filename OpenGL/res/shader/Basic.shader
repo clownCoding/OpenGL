@@ -15,19 +15,23 @@ flat out ivec4 boneIDs;
 out vec4 weights;
 out vec3 color;
 
-const int MAX_BONES = 250;
+const int MAX_BONES = 800;
+
+struct BoneTransform {
+	mat4 gBones[MAX_BONES];
+};
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform mat4 gBones[MAX_BONES];
+uniform BoneTransform boneTransform;
 
 void main()
 {
-	mat4 BoneTransform = gBones[aBoneIDs[0]] * aWeights[0];
-	BoneTransform += gBones[aBoneIDs[1]] * aWeights[1];
-	BoneTransform += gBones[aBoneIDs[2]] * aWeights[2];
-	BoneTransform += gBones[aBoneIDs[3]] * aWeights[3];
+	mat4 BoneTransform = boneTransform.gBones[aBoneIDs[0]] * aWeights[0];
+	BoneTransform += boneTransform.gBones[aBoneIDs[1]] * aWeights[1];
+	BoneTransform += boneTransform.gBones[aBoneIDs[2]] * aWeights[2];
+	BoneTransform += boneTransform.gBones[aBoneIDs[3]] * aWeights[3];
 
 	vec4 PosL = BoneTransform * vec4(aPos, 1.0);
 	gl_Position = projection * view * model * PosL;

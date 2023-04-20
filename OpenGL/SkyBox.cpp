@@ -75,7 +75,7 @@ void SkyBox::Draw(Camera& camera)
     glCullFace(GL_FRONT);
     glDepthFunc(GL_LEQUAL);
     shader->Bind();
-    glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)1200 / (float)900, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)1920 / (float)1080, 0.1f, 100.0f);
     glm::mat4 view = glm::mat4(glm::mat3(camera.GetView()));
     shader->SetUniformMat4f("view", view);
     shader->SetUniformMat4f("projection", projection);
