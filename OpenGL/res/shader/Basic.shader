@@ -15,7 +15,7 @@ flat out ivec4 boneIDs;
 out vec4 weights;
 out vec3 color;
 
-const int MAX_BONES = 800;
+const int MAX_BONES = 250;
 
 struct BoneTransform {
 	mat4 gBones[MAX_BONES];

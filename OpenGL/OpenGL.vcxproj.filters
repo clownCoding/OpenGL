@@ -128,6 +128,9 @@
     <None Include="res\shader\DepthMap.shader">
       <Filter>src\res\shader</Filter>
     </None>
+    <None Include="res\shader\Test.shader">
+      <Filter>src\res\shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h">

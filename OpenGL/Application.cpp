@@ -73,10 +73,10 @@ int main(void) {
 
 	Model scene("res/model/scene2/stage.pmx");
 	Shader shader("res/shader/Basic.shader");
-	Model ourModel("res/model/yousa/yousa.fbx");
+	Model ourModel("res/model/anbo/anbo.fbx");
 		
 	ourModel.SetStartTime();
-	//soundEngine->play2D("res/audio/music.mp3", GL_TRUE);
+	soundEngine->play2D("res/audio/music.mp3", GL_TRUE);
 
 	ParticleSystem ps;
 
@@ -186,7 +186,7 @@ void InitScene(Shader& shader, SkyBox skybox) {
 void InitRole(Shader& shader) {
 	glm::mat4 model(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.0f));
-	//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.1f));
 	glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	glm::mat4 view = camera.GetView();
